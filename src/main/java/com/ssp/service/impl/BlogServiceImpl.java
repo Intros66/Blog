@@ -5,6 +5,7 @@ import com.ssp.handler.NotFoundException;
 import com.ssp.pojo.Blog;
 import com.ssp.pojo.Type;
 import com.ssp.service.BlogService;
+import com.ssp.utils.MarkdownUtils;
 import com.ssp.utils.MyBeanUtils;
 import com.ssp.vo.BlogVo;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,19 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Blog getAndCovert(Long id) {
+        Blog blog = blogRepository.findById(id).get();
+        if (blog == null){
+            throw new  NotFoundException("该博客不存在");
+        }
+        Blog b = new Blog();
+        BeanUtils.copyProperties(blog,b);
+        String content = b.getContent();
+        b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        return b;
+    }
+
+    @Override
     public Page<Blog> listBlog(Pageable pageable, BlogVo blog) {
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
@@ -63,6 +77,12 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
         return blogRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Blog> listBlog(String query, Pageable pageable) {
+
+        return blogRepository.findByQuery(query,pageable);
     }
 
     @Override

@@ -47,33 +47,33 @@
         <div class="ui container">
             <div class="ui top attached segment">
                 <!--头部-->
-                <div class="ui horizontal link list ">
+                <div class="ui horizontal link list">
                     <div class="item">
-                        <img src="https://picsum.photos/id/1005/100/100" alt="" class="ui avatar image">
+                        <img src="https://picsum.photos/id/1005/100/100" th:src="${blog.user.avatar}" alt="" class="ui avatar image">
                         <div class="content">
-                            <a href="#" class="header">Sun</a>
+                            <a href="#" class="header" th:text="${blog.user.nickname}">Sun</a>
                         </div>
                     </div>
                     <div class="item">
-                        <i class="calendar icon"></i> 2020-4-2
+                        <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-4-2</span>
                     </div>
                     <div class="item">
-                        <i class="eye icon"></i> 2342
+                        <i class="eye icon"></i> <span th:text="${blog.views}">2342</span>
                     </div>
                 </div>
             </div>
             <div class="ui attached segment">
                 <!--图片区域-->
-                <img src="https://picsum.photos/id/1005/800/450" alt="" class="ui fluid rounded image">
+                <img src="https://picsum.photos/id/1005/800/450" th:src="@{${blog.firstPicture}}" alt="" class="ui fluid rounded image">
             </div>
             <div class="ui attached padded segment m-padded-tb-large">
                 <!--内容-->
                 <div class="ui right aligned basic segment">
-                    <div class="ui orange basic label">原创</div>
+                    <div class="ui orange basic label" th:text="${blog.flag}">原创</div>
                 </div>
-                <h2 class="ui center aligned header">为什么要学习Linux</h2>
+                <h2 class="ui center aligned header" th:text="${blog.title}">为什么要学习Linux</h2>
                 <br>
-                <div id="content" class="typo  typo-selection js-toc-content m-padded-lr-reponsive m-padded-tb-large">
+                <div id="content" class="typo  typo-selection js-toc-content m-padded-lr-reponsive m-padded-tb-large" th:utext="${blog.content}">
                     <h2 id="section1">一、关于 <i class="serif">Typo.css</i></h2>
 
                     <pre><code class="language-css">p { color: red }</code></pre>
@@ -434,7 +434,7 @@ h5,h6{font-size:1em;}
 
                 <!--标签-->
                 <div class="m-padded-lr-reponsive">
-                    <div class="ui basic teal left pointing label">
+                    <div class="ui basic teal left pointing label" th:each="tag : ${blog.tags}" th:text="${tag.name}">
                         Linux
                     </div>
                 </div>
@@ -465,8 +465,8 @@ h5,h6{font-size:1em;}
                 <div class="ui middle aligned grid">
                     <div class="eleven wide column">
                         <ul>
-                            <li>作者: Sun (联系作者)</li>
-                            <li>发表时间: 2019-12-02 16:55</li>
+                            <li>作者: <span th:text="${blog.user.nickname}">Sun</span> <a href="#" target="_blank" th:href="@{/about}">(联系作者)</a></li>
+                            <li>发表时间: <span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd HH:mm')}">2019-12-02 16:55</span></li>
                             <li>版权声明: 自由转载-非商用-非衍生-保持署名 (创意共享3.0许可证)</li>
                             <li>转载: 请在文末添加作者二维码</li>
                         </ul>
@@ -642,7 +642,7 @@ h5,h6{font-size:1em;}
 
     <!--/*/</th:block>/*/-->
 
-    <script>
+    <script th:inline="javascript">
         $('.menu.toggle').click(function () {
             $('.m-item').toggleClass('m-mobile-hide')
         });
@@ -676,8 +676,10 @@ h5,h6{font-size:1em;}
             position: 'left center'
         });
 
+        var server = "127.0.0.1:8080";
+        var url = /*[[@{/blog/{id}(id=${blog.id})}]]*/"";
         var qrcode = new QRCode("qrcode", {
-            text: "http://jindo.dev.naver.com/collie",
+            text: server+url,
             width: 110,
             height: 110,
             colorDark : "#000000",

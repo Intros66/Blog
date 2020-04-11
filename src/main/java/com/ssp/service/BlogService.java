@@ -11,9 +11,13 @@ public interface BlogService {
 
     Blog getBlog(Long id);
 
+    Blog getAndCovert(Long id);
+
     Page<Blog> listBlog(Pageable pageable, BlogVo blog);
 
     Page<Blog> listBlog(Pageable pageable);
+
+    Page<Blog> listBlog(String query, Pageable pageable);
 
     List<Blog> listRecommenedBlogTop(Integer size);
 
