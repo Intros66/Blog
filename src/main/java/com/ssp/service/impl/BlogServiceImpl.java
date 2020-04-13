@@ -37,16 +37,18 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.findById(id).get();
     }
 
+    @Transactional
     @Override
     public Blog getAndCovert(Long id) {
         Blog blog = blogRepository.findById(id).get();
-        if (blog == null){
+        if (null == blog){
             throw new  NotFoundException("该博客不存在");
         }
         Blog b = new Blog();
         BeanUtils.copyProperties(blog,b);
         String content = b.getContent();
         b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        blogRepository.updateViews(id);
         return b;
     }
 
@@ -95,6 +97,9 @@ public class BlogServiceImpl implements BlogService {
     @Transactional
     @Override
     public Blog saveBlog(Blog blog) {
+        if ("".equals(blog.getFlag()) || blog.getFlag().isEmpty()){
+            blog.setFlag("原创");
+        }
         if (blog.getId() == null){
             blog.setCreateTime(new Date());
             blog.setUpdateTime(new Date());

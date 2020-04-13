@@ -35,6 +35,8 @@ public class Comment implements Serializable {
 
     @ManyToOne
     private Comment parentComment;
+
+    private boolean adminComment;
 }
 
 

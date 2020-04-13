@@ -5,3 +5,8 @@ spring:
     prefix: classpath:/templates/
   profiles:
     active: dev
+
+
+comment:
+  avatar: /images/avatar.jpg
+
