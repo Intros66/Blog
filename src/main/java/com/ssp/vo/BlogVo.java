@@ -14,4 +14,5 @@ public class BlogVo {
     private Long typeId;
     private boolean recommend;
 
+
 }
