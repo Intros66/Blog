@@ -5,6 +5,8 @@ spring:
     prefix: classpath:/templates/
   profiles:
     active: dev
+  messages:
+    basename: i18n/messages
 
 
 comment:
